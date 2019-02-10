@@ -29,6 +29,7 @@ os.environ: GITHUB_ACTION: Upgrade to Python 3
             GITHUB_REF: refs/heads/master
             GITHUB_REPOSITORY: cclauss/Upgrade-to-Python3-test
             GITHUB_SHA: <<< stuff >>>
+            GITHUB_TOKEN: [FILTERED]
             GITHUB_WORKFLOW: New workflow
             GITHUB_WORKSPACE: /github/workspace
             GPG_KEY: <<< stuff >>>
