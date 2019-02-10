@@ -9,6 +9,8 @@ LABEL "com.github.actions.color"="6f42c1"
 
 COPY *.py /
 
+RUN apk update && apk upgrade && \
+    apk add --no-cache git openssh
 RUN pip install --upgrade pip
 RUN pip install flake8 future #  github3.py
 RUN python --version ; pip --version ; echo "flake8 $(flake8 --version)\nfuturize $(futurize --version)"
