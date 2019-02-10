@@ -97,8 +97,8 @@ def futurizer() -> None:
     print(f"flake8_results:\n{flake8_results}")
     s = "git remote -v"
     print(f"{s}: {cmd(s)}")
-    s = "git remote add upstream "
-    print(f"{s}: {cmd(s)}")
+    # s = "git remote add upstream "
+    # print(f"{s}: {cmd(s)}")
 
     s = "git checkout -b " + NEW_BRANCH_NAME
     print(f"{s}: {cmd(s)}")
