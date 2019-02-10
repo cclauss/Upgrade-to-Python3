@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import json
 import os
 import sys
 from contextlib import contextmanager
@@ -9,7 +10,7 @@ from typing import Iterable, Tuple, Union
 
 from generate_commit_msg import generate_commit_msg
 
-print(f"os.environ: {os.environ}")
+print(f"os.environ: {json.dumps(os.environ, sort_keys=True, indent=2)}")
 
 DIR_BASE = "/github/workspace/"
 NEW_BRANCH_NAME = "modernize-Python-2-codes"
