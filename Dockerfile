@@ -1,5 +1,5 @@
 # FROM jfloff/alpine-python
-FROM python/latest
+FROM python/3.7
 
 LABEL "com.github.actions.name"="Upgrade to Python 3"
 LABEL "com.github.actions.description"="Create pull requests to upgrade your code to Python 3."
