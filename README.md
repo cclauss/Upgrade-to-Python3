@@ -1,4 +1,4 @@
-# Upgrade-to-Python3
+# Upgrade to Python3
 A GitHub Action that will upgrade your Python code to Python 3
 
 This action uses [__flake8__](http://flake8.pycqa.org) to know if your Python code has syntax errors.
