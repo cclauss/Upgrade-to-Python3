@@ -10,8 +10,8 @@ from typing import Iterable, Tuple, Union
 
 from generate_commit_msg import generate_commit_msg
 
-print(f"os.environ: {"\n".join(f"     {key}: {os.getenv(value)}"
-                               for key in sorted(os.environ))}")
+print("os.environ: " + "\n            ".join(f"{key}: {os.getenv(value)}"
+                                             for key in sorted(os.environ)))
 
 DIR_BASE = "/github/workspace/"
 NEW_BRANCH_NAME = "modernize-Python-2-codes"
