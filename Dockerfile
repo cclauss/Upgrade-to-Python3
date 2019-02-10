@@ -9,8 +9,8 @@ COPY *.py /
 
 RUN pip install --upgrade pip
 RUN pip install flake8 future #  github3.py
-RUN python --version ; pip --version
-RUN echo "flake8 $(flake8 --version)"
-RUN echo "futurize $(futurize --version)"
+RUN python --version ; pip --version ; echo "flake8 $(flake8 --version)\nfuturize $(futurize --version)"
+RUN pwd
+RUN ls
 
 CMD ["python", "upgrade_to_python3.py"]
