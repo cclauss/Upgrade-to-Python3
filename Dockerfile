@@ -9,6 +9,7 @@ LABEL "com.github.actions.color"="6f42c1"
 
 COPY *.py /
 
+RUN ENV
 RUN apk update && apk upgrade && \
     apk add --no-cache git openssh
 RUN pip install --upgrade pip
