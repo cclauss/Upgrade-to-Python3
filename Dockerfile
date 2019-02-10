@@ -13,4 +13,4 @@ RUN python --version ; pip --version ; echo "flake8 $(flake8 --version)\nfuturiz
 RUN pwd
 RUN ls
 
-CMD ["python", "upgrade_to_python3.py"]
+CMD ["python", "/upgrade_to_python3.py"]
