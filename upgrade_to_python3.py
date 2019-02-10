@@ -12,6 +12,8 @@ from generate_commit_msg import generate_commit_msg
 
 print("os.environ: " + "\n            ".join(f"{key}: {os.getenv(key)}"
                                              for key in sorted(os.environ)))
+with open(os.getenv("GITHUB_EVENT_PATH")) as in_file:
+  print(json.load(in_file))
 
 DIR_BASE = "/github/workspace/"
 NEW_BRANCH_NAME = "modernize-Python-2-codes"
