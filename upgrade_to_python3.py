@@ -9,8 +9,7 @@ from typing import Iterable, Tuple, Union
 
 from generate_commit_msg import generate_commit_msg
 
-print(f"$TOKEN: {os.getenv('TOKEN')}")
-print(f"$GITHUB_TOKEN: {os.getenv('GITHUB_TOKEN')}")  # BUMMER!!
+assert os.getenv('GITHUB_TOKEN'), "Need access to the secret GITHUB_TOKEN."
 
 print("os.environ: " + "\n            ".join(f"{key}: {os.getenv(key)}"
                                              for key in sorted(os.environ)))
@@ -96,9 +95,14 @@ def futurizer() -> None:
         print("No Python 3 syntax errors or undefined names were found.")
         return
     print(f"flake8_results:\n{flake8_results}")
+    s = "git remote -v"
+    print(f"{s}: {cmd(s)}")
+    s = "git remote add upstream "
+    print(f"{s}: {cmd(s)}")
+
     s = "git checkout -b " + NEW_BRANCH_NAME
     print(f"{s}: {cmd(s)}")
-    s = "git branch -v"
+    s = "git branch"
     print(f"{s}: {cmd(s)}")
     s = 'git config --global user.email "{head_commit[author][email]}"'.format(**github_event)
     print(f"{s}: {cmd(s)}")
@@ -111,9 +115,13 @@ def futurizer() -> None:
         print(fix_safe_fixes())  # all files
     diff = cmd("git diff")
     if diff:
+        print("0 ===")
         print(f"diff:\n{diff}")
+        print("1 ===")
         print(cmd(["git", "commit", "-am", generate_commit_msg(diff)]))
-        print(cmd(f"git push --set-upstream origin {NEW_BRANCH_NAME}"))
+        print("2 ===")
+        print(cmd(f"git push --set-upstream https://cclauss:{os.getenv('GITHUB_TOKEN')}?github.com/cclauss/Upgrade-to-Python3-test {NEW_BRANCH_NAME}"))
+        print("3 ===")
     else:
         "diff is empty!"
     # assert diff0 == diff, f"diff0:\n {diff0}\ndiff:\n {diff}"
