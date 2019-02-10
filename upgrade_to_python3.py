@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-# run_cmd.py
-
-
-
 import os
 import sys
 from contextlib import contextmanager
@@ -13,7 +9,7 @@ from typing import Iterable, Tuple, Union
 
 from generate_commit_msg import generate_commit_msg
 
-print(f"{sys.getenv('GITHUB_WORKSPACE')}")
+print(f"os.environ: {os.environ}")
 
 DIR_BASE = "/github/workspace/"
 NEW_BRANCH_NAME = "modernize-Python-2-codes"
