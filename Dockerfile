@@ -5,6 +5,8 @@ LABEL "com.github.actions.description"="Create pull requests to upgrade your cod
 LABEL "com.github.actions.icon"="upload-cloud"
 LABEL "com.github.actions.color"="6f42c1"
 
+COPY *.py /
+
 RUN pip install --upgrade pip
 RUN pip install flake8 future #  github3.py
 RUN python --version ; pip --version
