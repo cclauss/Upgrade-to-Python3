@@ -3,12 +3,13 @@
 import json
 import os
 import sys
-from contextlib import contextmanager
 from getpass import getuser
 from subprocess import run
 from typing import Iterable, Tuple, Union
 
 from generate_commit_msg import generate_commit_msg
+
+print(os.getenv("GITHUB_TOKEN"))
 
 print("os.environ: " + "\n            ".join(f"{key}: {os.getenv(key)}"
                                              for key in sorted(os.environ)))
@@ -32,20 +33,9 @@ SAFE_FIXES = set("lib2to3.fixes.fix_" + fix for fix
                        sys_exc throw tuple_params types xreadlines""".split())
 
 
-@contextmanager
-def cd(new_dir: str) -> None:
-    """https://stackoverflow.com/questions/431684/how-do-i-change-directory-cd-in-python/24176022#24176022"""
-    prev_dir = os.getcwd()
-    os.chdir(os.path.expanduser(new_dir))
-    try:
-        yield
-    finally:
-        os.chdir(prev_dir)
-
-
 def cmd(in_cmd: Union[str, Iterable[str]], check: bool = True) -> str:  # run command and return its output
     """Run a command and return its output or raise CalledProcessError"""
-    print(f"cmd({in_cmd})")
+    print(f"cmd({in_cmd}):")
     if isinstance(in_cmd, str):
         in_cmd = in_cmd.strip().split()
     result = run(in_cmd, capture_output=True, text=True)
@@ -53,16 +43,6 @@ def cmd(in_cmd: Union[str, Iterable[str]], check: bool = True) -> str:  # run co
         print("\n".join(result.stderr.splitlines()))
         result.check_returncode()  # will raise subprocess.CalledProcessError()
     return "\n".join(result.stdout.splitlines())
-
-
-def fork_repo() -> None:
-    "Could click the 'fork' button using Selenum, or similar..."
-    pass
-
-
-def clone_repo(repo_name: str) -> str:
-    myfork_url = "/".join((URL_BASE, USERNAME, repo_name))
-    print(cmd(f"git clone {myfork_url}"))
 
 
 def files_with_print_issues(flake8_results: str) -> Tuple[str]:
@@ -104,12 +84,12 @@ def git_remote_add_upstream(upstream_url: str) -> str:
 
 
 def futurizer() -> None:
-    print(f"pwd: {cmd('pwd')}")
-    os.chdir(os.getenv("GITHUB_WORKSPACE", "/github/workspace"))
-    print(f"pwd: {cmd('pwd')}")
-    print(f"ls: {cmd('ls')}")
-    print(f"git branch: {cmd('git branch')}")
-    print(f"git remote -v: {cmd('git remote -v')}")
+    # print(f"pwd: {cmd('pwd')}")
+    # os.chdir(os.getenv("GITHUB_WORKSPACE", "/github/workspace"))
+    # print(f"pwd: {cmd('pwd')}")
+    # print(f"ls: {cmd('ls')}")
+    # print(f"git branch: {cmd('git branch')}")
+    # print(f"git remote -v: {cmd('git remote -v')}")
     flake8_results = flake8_tests()
     if not flake8_results:
         print("No Python 3 syntax errors or undefined names were found.")
@@ -119,9 +99,9 @@ def futurizer() -> None:
     print(f"{s}: {cmd(s)}")
     s = "git branch -v"
     print(f"{s}: {cmd(s)}")
-    s = "git config user.email {head_commit[author][email]}".format(**github_event)
+    s = 'git config --global user.email "{head_commit[author][email]}"'.format(**github_event)
     print(f"{s}: {cmd(s)}")
-    s = "git config user.name {head_commit[author][name]}".format(**github_event)
+    s = 'git config --global user.name "{head_commit[author][name]}"'.format(**github_event)
     print(f"{s}: {cmd(s)}")
     file_paths = files_with_print_issues(flake8_results)
     if file_paths:
