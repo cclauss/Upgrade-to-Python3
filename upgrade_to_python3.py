@@ -14,7 +14,7 @@ print("os.environ: " + "\n            ".join(f"{key}: {os.getenv(key)}"
                                              for key in sorted(os.environ)))
 with open(os.getenv("GITHUB_EVENT_PATH")) as in_file:
     github_event = json.load(in_file)
-print(github_event)
+print(json.dumps(github_event, sort_keys=True, indent=2))
 
 # DIR_BASE = "/github/workspace/"
 NEW_BRANCH_NAME = "modernize-Python-2-codes"
@@ -119,9 +119,9 @@ def futurizer() -> None:
     print(f"{s}: {cmd(s)}")
     s = "git branch -v"
     print(f"{s}: {cmd(s)}")
-    s = "git config user.email {head_commit[author][email]}".format(**d)
+    s = "git config user.email {head_commit[author][email]}".format(**github_event)
     print(f"{s}: {cmd(s)}")
-    s = "git config user.name {head_commit[author][name]}".format(**d)
+    s = "git config user.name {head_commit[author][name]}".format(**github_event)
     print(f"{s}: {cmd(s)}")
     file_paths = files_with_print_issues(flake8_results)
     if file_paths:
