@@ -102,31 +102,32 @@ def git_remote_add_upstream(upstream_url: str) -> str:
     return cmd(f"git remote add upstream {upstream_url}")
 
 
-def futurizer(repo_dir: str) -> int:
-    with cd(repo_dir):
-        flake8_results = flake8_tests()
-        print(f"flake8_results:\n{flake8_results}")
-        if flake8_results:
-            # git_remote_add_upstream(upstream_url)
-            # checkout_new_branch(NEW_BRANCH_NAME)
-            file_paths = files_with_print_issues(flake8_results)
-            print(fix_print(file_paths))  # only files that are broken!
-            print(fix_safe_fixes())  # all files
-            diff = cmd("git diff")
-            if diff:
-                print(f"diff:\n{diff}")
-                print(cmd(["git", "commit", "-am", generate_commit_msg(diff)]))
-                print(cmd(f"git push --set-upstream origin {NEW_BRANCH_NAME}"))
-            else:
-                "diff is empty!"
-            # assert diff0 == diff, f"diff0:\n {diff0}\ndiff:\n {diff}"
-            print("Success!")
-            print(cmd(f"open {upstream_url}"))
+def futurizer() -> None:
+    os.chdir(os.getenv("GITHUB_WORKSPACE", "/github/workspace"))
+    cmd("pwd")
+    cmd("ls")
+    cmd("git remote -v")
+    flake8_results = flake8_tests()
+    if not flake8_results:
+        print("No Python 3 syntax errors or undefined names were found.")
+        return
+    print(f"flake8_results:\n{flake8_results}")
+    file_paths = files_with_print_issues(flake8_results)
+    if file_paths:
+        print(fix_print(file_paths))  # only files that are broken!
+    else:
+        print(fix_safe_fixes())  # all files
+    diff = cmd("git diff")
+    if diff:
+        print(f"diff:\n{diff}")
+        print(cmd(["git", "commit", "-am", generate_commit_msg(diff)]))
+        print(cmd(f"git push --set-upstream origin {NEW_BRANCH_NAME}"))
+    else:
+        "diff is empty!"
+    # assert diff0 == diff, f"diff0:\n {diff0}\ndiff:\n {diff}"
+    print("Success!")
+    # print(cmd(f"open {upstream_url}"))
 
 
 if __name__ == "__main__":
-    repo = DIR_BASE
-    assert repo, "Man, you gotta give me something to work with here."
-    print(f"pwd: {cmd('pwd')}")
-    print(f"repo: {repo}")
-    futurizer(repo)
+    futurizer()
