@@ -12,7 +12,12 @@ COPY *.py /
 RUN pip install --upgrade pip
 RUN pip install flake8 future #  github3.py
 RUN python --version ; pip --version ; echo "flake8 $(flake8 --version)\nfuturize $(futurize --version)"
-RUN pwd
-RUN ls
+# RUN pwd
+# RUN ls
+RUN echo "WS $GITHUB_WORKSPACE"
+RUN echo "EP $GITHUB_EVENT_PATH"
+RUN echo "TO $TOKEN"
+RUN echo "GT $GITHUB_TOKEN"
+RUN echo "REPO $GITHUB_REPOSITORY"
 
 CMD ["python", "/upgrade_to_python3.py"]
