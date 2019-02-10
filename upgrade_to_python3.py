@@ -95,8 +95,16 @@ def futurizer() -> None:
         print("No Python 3 syntax errors or undefined names were found.")
         return
     print(f"flake8_results:\n{flake8_results}")
+
     s = "git remote -v"
     print(f"{s}: {cmd(s)}")
+    s = "git remote rm origin"
+    print(f"{s}: {cmd(s)}")
+    s = f"git remote add origin https://cclauss:{os.getenv('GITHUB_TOKEN')}@github.com/cclauss/Upgrade-to-Python3-test"
+    print(f"{s}: {cmd(s)}")
+    s = "git remote -v"
+    print(f"{s}: {cmd(s)}")
+    
     # s = "git remote add upstream "
     # print(f"{s}: {cmd(s)}")
 
@@ -120,8 +128,10 @@ def futurizer() -> None:
         print("1 ===")
         print(cmd(["git", "commit", "-am", generate_commit_msg(diff)]))
         print("2 ===")
-        print(cmd(f"git push --set-upstream https://cclauss:{os.getenv('GITHUB_TOKEN')}?github.com/cclauss/Upgrade-to-Python3-test {NEW_BRANCH_NAME}"))
+        print(cmd(f"git push --set-upstream origin {NEW_BRANCH_NAME}"))
         print("3 ===")
+        # print(cmd(f"git push --set-upstream https://cclauss:{os.getenv('GITHUB_TOKEN')}@github.com/cclauss/Upgrade-to-Python3-test {NEW_BRANCH_NAME}"))
+        print("4 ===")
     else:
         "diff is empty!"
     # assert diff0 == diff, f"diff0:\n {diff0}\ndiff:\n {diff}"
