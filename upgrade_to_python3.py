@@ -10,7 +10,7 @@ from typing import Iterable, Tuple, Union
 
 from generate_commit_msg import generate_commit_msg
 
-print("os.environ: " + "\n            ".join(f"{key}: {os.getenv(value)}"
+print("os.environ: " + "\n            ".join(f"{key}: {os.getenv(key)}"
                                              for key in sorted(os.environ)))
 
 DIR_BASE = "/github/workspace/"
