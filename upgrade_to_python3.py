@@ -13,7 +13,7 @@ from typing import Iterable, Tuple, Union
 
 from generate_commit_msg import generate_commit_msg
 
-print(f"{sys.getenv('GITHUB_WORKSPACE')")
+print(f"{sys.getenv('GITHUB_WORKSPACE')}")
 
 DIR_BASE = "/github/workspace/"
 NEW_BRANCH_NAME = "modernize-Python-2-codes"
