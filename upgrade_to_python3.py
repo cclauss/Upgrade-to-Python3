@@ -100,7 +100,7 @@ def futurizer() -> None:
     print(f"{s}: {cmd(s)}")
     s = "git remote rm origin"
     print(f"{s}: {cmd(s)}")
-    s = f"git remote add origin https://cclauss:{os.getenv('GITHUB_TOKEN')}@github.com/cclauss/Upgrade-to-Python3-test"
+    s = f"git remote add origin https://cclauss:{os.getenv('GITHUB_TOKEN')}@github.com/cclauss/Upgrade-to-Python3-test.git"
     print(f"{s}: {cmd(s)}")
     s = "git remote -v"
     print(f"{s}: {cmd(s)}")
