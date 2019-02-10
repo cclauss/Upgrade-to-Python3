@@ -104,9 +104,10 @@ def git_remote_add_upstream(upstream_url: str) -> str:
 
 def futurizer() -> None:
     os.chdir(os.getenv("GITHUB_WORKSPACE", "/github/workspace"))
-    cmd("pwd")
-    cmd("ls")
-    cmd("git remote -v")
+    print(f"pwd: {cmd('pwd')}”)
+    print(f"ls: {cmd('ls')}”)
+    print(f"git branch: {cmd('git branch')}”)
+    print(f"git remote -v: {cmd('git remote -v')}”)
     flake8_results = flake8_tests()
     if not flake8_results:
         print("No Python 3 syntax errors or undefined names were found.")
