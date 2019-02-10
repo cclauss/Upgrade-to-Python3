@@ -7,5 +7,8 @@ LABEL "com.github.actions.color"="6f42c1"
 
 RUN pip install --upgrade pip
 RUN pip install flake8 future github3.py
+RUN python --version ; pip --version
+RUN echo "flake8 $(flake8 --version)"
+RUN echo "futurize $(futurize --version)"
 
 CMD ["python", "upgrade_to_python3.py"]
