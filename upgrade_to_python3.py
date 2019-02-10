@@ -9,7 +9,8 @@ from typing import Iterable, Tuple, Union
 
 from generate_commit_msg import generate_commit_msg
 
-print(os.getenv("GITHUB_TOKEN"))
+print(f"$TOKEN: {os.getenv('TOKEN')}")
+print(f"$GITHUB_TOKEN: {os.getenv('GITHUB_TOKEN')}")  # BUMMER!!
 
 print("os.environ: " + "\n            ".join(f"{key}: {os.getenv(key)}"
                                              for key in sorted(os.environ)))
