@@ -13,15 +13,16 @@ from generate_commit_msg import generate_commit_msg
 print("os.environ: " + "\n            ".join(f"{key}: {os.getenv(key)}"
                                              for key in sorted(os.environ)))
 with open(os.getenv("GITHUB_EVENT_PATH")) as in_file:
-  print(json.load(in_file))
+    github_event = json.load(in_file)
+print(github_event)
 
-DIR_BASE = "/github/workspace/"
+# DIR_BASE = "/github/workspace/"
 NEW_BRANCH_NAME = "modernize-Python-2-codes"
-URL_BASE = "https://github.com"
-USERNAME = getuser()  # Does local username == GitHub username?!?
-if USERNAME == 'root':
-    USERNAME = 'cclauss'
-print(f"USERNAME = {USERNAME}")
+# URL_BASE = "https://github.com"
+# USERNAME = getuser()  # Does local username == GitHub username?!?
+# if USERNAME == 'root':
+#    USERNAME = 'cclauss'
+# print(f"USERNAME = {USERNAME}")
 
 # https://github.com/PythonCharmers/python-future/blob/master/src/libfuturize/fixes/__init__.py
 # An even safer subset of fixes than `futurize --stage1`
@@ -103,6 +104,7 @@ def git_remote_add_upstream(upstream_url: str) -> str:
 
 
 def futurizer() -> None:
+    print(f"pwd: {cmd('pwd')}")
     os.chdir(os.getenv("GITHUB_WORKSPACE", "/github/workspace"))
     print(f"pwd: {cmd('pwd')}")
     print(f"ls: {cmd('ls')}")
@@ -113,6 +115,14 @@ def futurizer() -> None:
         print("No Python 3 syntax errors or undefined names were found.")
         return
     print(f"flake8_results:\n{flake8_results}")
+    s = "git checkout -b " + NEW_BRANCH_NAME
+    print(f"{s}: {cmd(s)}")
+    s = "git branch -v"
+    print(f"{s}: {cmd(s)}")
+    s = "git config user.email {head_commit[author][email]}".format(**d)
+    print(f"{s}: {cmd(s)}")
+    s = "git config user.name {head_commit[author][name]}".format(**d)
+    print(f"{s}: {cmd(s)}")
     file_paths = files_with_print_issues(flake8_results)
     if file_paths:
         print(fix_print(file_paths))  # only files that are broken!
