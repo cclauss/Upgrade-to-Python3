@@ -11,6 +11,9 @@ from typing import Iterable, Tuple, Union
 from generate_commit_msg import generate_commit_msg
 
 assert os.getenv('GITHUB_TOKEN'), 'Need access to the secret GITHUB_TOKEN.'
+with open(os.getenv("GITHUB_EVENT_PATH")) as in_file:
+    github_event = json.load(in_file)
+# print(json.dumps(github_event, sort_keys=True, indent=2))
 
 
 def cmd(in_cmd: Union[str, Iterable[str]], check: bool = True) -> str:  # run command and return its output
