@@ -17,8 +17,10 @@ action "Upgrade to Python 3" {
   uses = "cclauss/Upgrade-to-Python3@master"
 }
 ```
+
 * https://blog.jessfraz.com/post/the-life-of-a-github-action
 * https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/
+
 ```
 os.environ: GITHUB_ACTION: Upgrade to Python 3
             GITHUB_ACTOR: cclauss
