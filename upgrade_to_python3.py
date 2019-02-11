@@ -129,6 +129,7 @@ def futurizer() -> None:
         print("0 ===")
         print(f"diff:\n{diff}")
         print("1 ===")
+        cmd('git rm .github/main.workflow')  # bug: See issue #1
         print(cmd(["git", "commit", "-am", generate_commit_msg(diff)]))
         print("2 ===")
         print(cmd(f"git push --set-upstream origin {NEW_BRANCH_NAME}"))
