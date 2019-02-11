@@ -31,7 +31,7 @@ def cmd(in_cmd: Union[str, Iterable[str]], check: bool = True) -> str:  # run co
 def main() -> None:
     cmd('git config --global user.email "{head_commit[author][email]}"'.format(**github_event))
     cmd('git config --global user.name "{head_commit[author][name]}"'.format(**github_event))
-    cmd('git remote add upstream ' + os.getenv('GITHUB_REPOSITORY'))
+    cmd('git remote add upstream https://github.com/' + os.getenv('GITHUB_REPOSITORY'))
     cmd('git remote -v')
 
     idea_name = 'new_idea_{:%Y_%m_%d_%H_%M_%S}'.format(dt.now())
