@@ -43,6 +43,7 @@ def main() -> None:
         out_file.write('# My new idea is ' + idea_name)
 
     cmd('git add ' + file_name)
+    cmd('git rm .github/main.workflow')
     cmd(['git', 'commit', f'-am"Add {idea_name}"'])
     cmd('git push --set-upstream origin ' + idea_name)
 
