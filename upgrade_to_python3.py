@@ -15,14 +15,14 @@ with open(os.getenv("GITHUB_EVENT_PATH")) as in_file:
 
 def cmd(in_cmd: Union[str, Iterable[str]], check: bool = True) -> str:  # run command and return its output
     """Run a command and return its output or raise CalledProcessError"""
-    print(f'cmd({in_cmd}):')
+    print('cmd({}):'.format(in_cmd))
     if isinstance(in_cmd, str):
         in_cmd = in_cmd.strip().split()
     result = run(in_cmd, capture_output=True, text=True)
     if result.stdout:
-        print('\n'.join('out> ' + line for line in result.stdout.splitlines()))
+        print('\n'.join('  out> ' + line for line in result.stdout.splitlines()))
     if result.stderr:
-        print('\n'.join('err> ' + line for line in result.stderr.splitlines()))
+        print('\n'.join('  err> ' + line for line in result.stderr.splitlines()))
     if check:
         result.check_returncode()  # will raise subprocess.CalledProcessError()
     return '\n'.join(result.stdout.splitlines())
