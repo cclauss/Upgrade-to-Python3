@@ -2,13 +2,10 @@
 
 import json
 import os
-import sys
+
 from datetime import datetime as dt
-from getpass import getuser
 from subprocess import run
 from typing import Iterable, Tuple, Union
-
-from generate_commit_msg import generate_commit_msg
 
 assert os.getenv('GITHUB_TOKEN'), 'Need access to the secret GITHUB_TOKEN.'
 with open(os.getenv("GITHUB_EVENT_PATH")) as in_file:
@@ -22,8 +19,10 @@ def cmd(in_cmd: Union[str, Iterable[str]], check: bool = True) -> str:  # run co
     if isinstance(in_cmd, str):
         in_cmd = in_cmd.strip().split()
     result = run(in_cmd, capture_output=True, text=True)
-    print('\n'.join('out> ' + line for line in result.stdout.splitlines()))
-    print('\n'.join('err> ' + line for line in result.stderr.splitlines()))
+    if result.stdout:
+        print('\n'.join('out> ' + line for line in result.stdout.splitlines()))
+    if result.stderr:
+        print('\n'.join('err> ' + line for line in result.stderr.splitlines()))
     if check:
         result.check_returncode()  # will raise subprocess.CalledProcessError()
     return '\n'.join(result.stdout.splitlines())
