@@ -20,9 +20,9 @@ def cmd(in_cmd: Union[str, Iterable[str]], check: bool = True) -> str:  # run co
         in_cmd = in_cmd.strip().split()
     result = run(in_cmd, capture_output=True, text=True)
     if result.stdout:
-        print(result.stdout)
+        print(result.stdout.rstrip())
     if result.stderr:
-        print(result.stderr)
+        print(result.stderr.rstrip())
     if check:
         result.check_returncode()  # will raise subprocess.CalledProcessError()
     return '\n'.join(result.stdout.splitlines())
