@@ -41,7 +41,7 @@ os.environ: GITHUB_ACTION: Upgrade to Python 3
             PYTHON_VERSION: 3.7.2
 ```
 ### Error
-Failure on __git push --set-upstream origin new_idea_2019_02_11_10_03_38__
+Failure on "__git push --set-upstream origin new_idea_2019_02_11_10_03_38__"
 * __refusing to allow an integration to create .github/main.workflow__
 ```
 $ git config --global user.email "cclauss@me.com"
@@ -59,6 +59,7 @@ $ ['git', 'commit', '-am"Add new_idea_2019_02_11_10_03_38"']
 [new_idea_2019_02_11_10_03_38 075b76a] "Add new_idea_2019_02_11_10_03_38"
  1 file changed, 1 insertion(+)
  create mode 100644 new_idea_2019_02_11_10_03_38.md
+
 $ git push --set-upstream origin new_idea_2019_02_11_10_03_38
 To https://github.com/cclauss/Upgrade-to-Python3-test.git
  ! [remote rejected] new_idea_2019_02_11_10_03_38 -> new_idea_2019_02_11_10_03_38 (refusing to allow an integration to create .github/main.workflow)
