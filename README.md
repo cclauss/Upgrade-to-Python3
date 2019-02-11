@@ -38,3 +38,38 @@ os.environ: GITHUB_ACTION: Upgrade to Python 3
             PYTHON_PIP_VERSION: 19.0.1
             PYTHON_VERSION: 3.7.2
 ```
+### Error
+Failure on __git push --set-upstream origin new_idea_2019_02_11_10_03_38__
+* __refusing to allow an integration to create .github/main.workflow__
+```
+$ git config --global user.email "cclauss@me.com"
+$ git config --global user.name "cclauss"
+$ git remote add upstream https://github.com/cclauss/Upgrade-to-Python3-test.git
+$ git remote -v
+origin	https://github.com/cclauss/Upgrade-to-Python3-test.git (fetch)
+origin	https://github.com/cclauss/Upgrade-to-Python3-test.git (push)
+upstream	https://github.com/cclauss/Upgrade-to-Python3-test.git (fetch)
+upstream	https://github.com/cclauss/Upgrade-to-Python3-test.git (push)
+$ git checkout -b new_idea_2019_02_11_10_03_38
+Switched to a new branch 'new_idea_2019_02_11_10_03_38'
+$ git add new_idea_2019_02_11_10_03_38.md
+$ ['git', 'commit', '-am"Add new_idea_2019_02_11_10_03_38"']
+[new_idea_2019_02_11_10_03_38 075b76a] "Add new_idea_2019_02_11_10_03_38"
+ 1 file changed, 1 insertion(+)
+ create mode 100644 new_idea_2019_02_11_10_03_38.md
+$ git push --set-upstream origin new_idea_2019_02_11_10_03_38
+To https://github.com/cclauss/Upgrade-to-Python3-test.git
+ ! [remote rejected] new_idea_2019_02_11_10_03_38 -> new_idea_2019_02_11_10_03_38 (refusing to allow an integration to create .github/main.workflow)
+error: failed to push some refs to 'https://github.com/cclauss/Upgrade-to-Python3-test.git'
+Traceback (most recent call last):
+  File "/upgrade_to_python3.py", line 51, in <module>
+    main()
+  File "/upgrade_to_python3.py", line 47, in main
+    cmd('git push --set-upstream origin ' + idea_name)
+  File "/upgrade_to_python3.py", line 27, in cmd
+    result.check_returncode()  # will raise subprocess.CalledProcessError()
+  File "/usr/local/lib/python3.7/subprocess.py", line 428, in check_returncode
+    self.stderr)
+subprocess.CalledProcessError: Command '['git', 'push', '--set-upstream', 'origin', 'new_idea_2019_02_11_10_03_38']' returned non-zero exit status 1.
+
+```
