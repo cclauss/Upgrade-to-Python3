@@ -35,14 +35,17 @@ SAFE_FIXES = set("lib2to3.fixes.fix_" + fix for fix
 
 def cmd(in_cmd: Union[str, Iterable[str]], check: bool = True) -> str:  # run command and return its output
     """Run a command and return its output or raise CalledProcessError"""
-    print(f"cmd({in_cmd}):")
+    print('$', in_cmd)
     if isinstance(in_cmd, str):
         in_cmd = in_cmd.strip().split()
     result = run(in_cmd, capture_output=True, text=True)
-    if check and result.returncode:
-        print("\n".join(result.stderr.splitlines()))
+    if result.stdout:
+        print(result.stdout.rstrip())
+    if result.stderr:
+        print(result.stderr.rstrip())
+    if check:
         result.check_returncode()  # will raise subprocess.CalledProcessError()
-    return "\n".join(result.stdout.splitlines())
+    return '\n'.join(result.stdout.splitlines())
 
 
 def files_with_print_issues(flake8_results: str) -> Tuple[str]:
