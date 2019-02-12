@@ -99,7 +99,7 @@ if '+' in diff:
     cmd(["git", "commit", "-am", generate_commit_msg(diff)])
     try:
         push_result = cmd("git push --set-upstream origin " + NEW_BRANCH_NAME)
-    except subprocess.CalledProcessError:
+    except CalledProcessError:
         print(f'Failure: the branch {NEW_BRANCH_NAME} must be deleted before continuing.')
         raise
 else:
