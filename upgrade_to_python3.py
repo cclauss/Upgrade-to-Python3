@@ -9,22 +9,9 @@ from typing import Iterable, Tuple, Union
 
 from generate_commit_msg import generate_commit_msg
 
-NEW_BRANCH_NAME = "modernize-Python-2-codes"
-
 print('=' * 83)  # Mark the start of Python execution in the Action logfile
 
-branches = cmd('git branch')
-print(branches)
-assert NEW_BRANCH_NAME not in branches, (
-    f'The branch {NEW_BRANCH_NAME} is already present and must be deleted.')
-assert os.getenv('GITHUB_TOKEN'), (
-  '.github/main.workflow must provide access to the secret GITHUB_TOKEN.')
-
-print('os.environ: ' + '\n            '.join(f'{key}: {os.getenv(key)}'
-                                             for key in sorted(os.environ)))
-with open(os.getenv("GITHUB_EVENT_PATH")) as in_file:
-    github_event = json.load(in_file)
-print(json.dumps(github_event, sort_keys=True, indent=2))
+NEW_BRANCH_NAME = "modernize-Python-2-codes"
 
 # https://github.com/PythonCharmers/python-future/blob/master/src/libfuturize/fixes/__init__.py
 # An even safer subset of fixes than `futurize --stage1`
@@ -134,6 +121,18 @@ def futurizer() -> None:
     print("Success!")
     # print(cmd(f"open {upstream_url}"))
 
+branches = cmd('git branch')
+print(branches)
+assert NEW_BRANCH_NAME not in branches, (
+    f'The branch {NEW_BRANCH_NAME} is already present and must be deleted.')
+assert os.getenv('GITHUB_TOKEN'), (
+    '.github/main.workflow must provide access to the secret GITHUB_TOKEN.')
+
+print('os.environ: ' + '\n            '.join(f'{key}: {os.getenv(key)}'
+                                             for key in sorted(os.environ)))
+with open(os.getenv("GITHUB_EVENT_PATH")) as in_file:
+    github_event = json.load(in_file)
+print(json.dumps(github_event, sort_keys=True, indent=2))
 
 if __name__ == "__main__":
     futurizer()
