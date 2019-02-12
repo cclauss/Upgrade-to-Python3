@@ -107,4 +107,4 @@ if '+' in diff:
 else:
     print('diff is empty!')
 print('Success!')
-print('\n'.join(line.replace('remote:', '') for line in push_result.splitlines()[1:3])
+print('\n'.join(line.replace('remote:', '') for line in push_result.splitlines()[1:3]))
