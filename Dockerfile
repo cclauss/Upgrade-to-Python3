@@ -13,6 +13,5 @@ RUN apk update \
 RUN pip install --upgrade pip
 RUN pip install flake8 future
 RUN python --version ; pip --version ; echo "flake8 $(flake8 --version)" ; echo "futurize $(futurize --version)"
-RUN python -c "print('=' * 80)"
 
 CMD ["python", "/upgrade_to_python3.py"]
