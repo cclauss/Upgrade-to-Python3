@@ -32,7 +32,8 @@ def cmd(in_cmd: Union[str, Iterable[str]], check: bool = True) -> str:  # run co
         print(result.stderr.rstrip())
     if check:
         result.check_returncode()  # will raise subprocess.CalledProcessError()
-    return '\n'.join(result.stdout.splitlines())
+    # return '\n'.join(result.stdout.splitlines())
+    return result.stdout
 
 
 def flake8_tests() -> str:
@@ -105,5 +106,4 @@ if '+' in diff:
 else:
     print("diff is empty!")
 print("Success!")
-print('\n'.join(line for line in push_result.replace('remote:') if line))
-print(push_result.replace('remote:'))
+print(push_result.replace('remote:', ''))
