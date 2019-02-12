@@ -3,7 +3,7 @@
 import json
 import os
 import sys
-from subprocess import run
+from subprocess import CalledProcessError, run
 from typing import Iterable, Tuple, Union
 
 from generate_commit_msg import generate_commit_msg
