@@ -92,14 +92,11 @@ cmd("git checkout -b " + NEW_BRANCH_NAME)
 cmd('git config --global user.email "{head_commit[author][email]}"'.format(**github_event))
 cmd('git config --global user.name "{head_commit[author][name]}"'.format(**github_event))
 file_paths = files_with_print_issues(flake8_results)
-if file_paths:
-    print(fix_print(file_paths))  # only files that are broken!
-else:
-    print(fix_safe_fixes())  # all files
-if cmd("git diff"):
+diff = fix_print(file_paths) if file_paths else fix_safe_fixes()
+if '+' in diff:
     cmd('git rm .github/main.workflow')  # GitHub Actions bug: See issue #1
     cmd(["git", "commit", "-am", generate_commit_msg(diff)])
-    cmd(f"git push --set-upstream origin {NEW_BRANCH_NAME}")
+    cmd("git push --set-upstream origin " + NEW_BRANCH_NAME)
 else:
     print("diff is empty!")
 print("Success!")
