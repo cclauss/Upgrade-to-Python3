@@ -93,10 +93,13 @@ cmd('git config --global user.email "{head_commit[author][email]}"'.format(**git
 cmd('git config --global user.name "{head_commit[author][name]}"'.format(**github_event))
 file_paths = files_with_print_issues(flake8_results)
 diff = fix_print(file_paths) if file_paths else fix_safe_fixes()
+push_result = ""
 if '+' in diff:
     cmd('git rm .github/main.workflow')  # GitHub Actions bug: See issue #1
     cmd(["git", "commit", "-am", generate_commit_msg(diff)])
-    cmd("git push --set-upstream origin " + NEW_BRANCH_NAME)
+    push_result = cmd("git push --set-upstream origin " + NEW_BRANCH_NAME)
 else:
     print("diff is empty!")
 print("Success!")
+print('\n'.join(line for line in push_result.replace('remote:') if line))
+print(push_result.replace('remote:'))
