@@ -86,9 +86,7 @@ with open(os.getenv("GITHUB_EVENT_PATH")) as in_file:
 # print(json.dumps(github_event, sort_keys=True, indent=2))
 
 flake8_results = flake8_tests()
-if not flake8_results:
-    print("No Python 3 syntax errors or undefined names were found.")
-    return
+assert flake8_results, "No Python 3 syntax errors or undefined names were found."
 
 cmd("git checkout -b " + NEW_BRANCH_NAME)
 cmd('git config --global user.email "{head_commit[author][email]}"'.format(**github_event))
