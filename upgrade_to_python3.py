@@ -3,7 +3,6 @@
 import json
 import os
 import sys
-from getpass import getuser
 from subprocess import run
 from typing import Iterable, Tuple, Union
 
@@ -25,7 +24,7 @@ def cmd(in_cmd: Union[str, Iterable[str]], check: bool = True) -> str:  # run co
     """Run a command and return its output or raise CalledProcessError"""
     print('$', in_cmd)
     if isinstance(in_cmd, str):
-        in_cmd = in_cmd.strip().split()
+        in_cmd = in_cmd.split()
     result = run(in_cmd, capture_output=True, text=True)
     if result.stdout:
         print(result.stdout.rstrip())
@@ -34,6 +33,10 @@ def cmd(in_cmd: Union[str, Iterable[str]], check: bool = True) -> str:  # run co
     if check:
         result.check_returncode()  # will raise subprocess.CalledProcessError()
     return '\n'.join(result.stdout.splitlines())
+
+
+def flake8_tests() -> str:
+    return cmd("flake8 . --show-source --statistics --select=E999", check=False)
 
 
 def files_with_print_issues(flake8_results: str) -> Tuple[str]:
@@ -61,78 +64,44 @@ def fix_safe_fixes() -> str:
                "-f libfuturize.fixes.fix_next_call -w .")
 
 
-def flake8_tests() -> str:
-    return cmd("flake8 . --show-source --statistics --select=E999", check=False)
+# def checkout_new_branch(branch_name: str = "") -> str:
+#     branch_name = branch_name or NEW_BRANCH_NAME
+#     return cmd(f"git checkout -b {branch_name}")
 
 
-def checkout_new_branch(branch_name: str = "") -> str:
-    branch_name = branch_name or NEW_BRANCH_NAME
-    return cmd(f"git checkout -b {branch_name}")
+# def git_remote_add_upstream(upstream_url: str) -> str:
+#     return cmd(f"git remote add upstream {upstream_url}")
 
 
-def git_remote_add_upstream(upstream_url: str) -> str:
-    return cmd(f"git remote add upstream {upstream_url}")
-
-
-def futurizer() -> None:
-    # print(f"pwd: {cmd('pwd')}")
-    # os.chdir(os.getenv("GITHUB_WORKSPACE", "/github/workspace"))
-    # print(f"pwd: {cmd('pwd')}")
-    # print(f"ls: {cmd('ls')}")
-    # print(f"git branch: {cmd('git branch')}")
-    # print(f"git remote -v: {cmd('git remote -v')}")
-    flake8_results = flake8_tests()
-    if not flake8_results:
-        print("No Python 3 syntax errors or undefined names were found.")
-        return
-    print(f"flake8_results:\n{flake8_results}")
-
-    """
-    s = "git remote -v"
-    print(f"{s}: {cmd(s)}")
-    s = "git remote rm origin"
-    print(f"{s}: {cmd(s)}")
-    s = f"git remote add origin https://cclauss:{os.getenv('GITHUB_TOKEN')}@github.com/cclauss/Upgrade-to-Python3-test.git"
-    print(f"{s}: {cmd(s)}")
-    s = "git remote -v"
-    print(f"{s}: {cmd(s)}")
-    
-    # s = "git remote add upstream "
-    # print(f"{s}: {cmd(s)}")
-    """
-
-    cmd("git checkout -b " + NEW_BRANCH_NAME)
-    cmd("git branch")
-    cmd('git config --global user.email "{head_commit[author][email]}"'.format(**github_event))
-    cmd('git config --global user.name "{head_commit[author][name]}"'.format(**github_event))
-    file_paths = files_with_print_issues(flake8_results)
-    if file_paths:
-        print(fix_print(file_paths))  # only files that are broken!
-    else:
-        print(fix_safe_fixes())  # all files
-    diff = cmd("git diff")
-    if diff:
-        cmd('git rm .github/main.workflow')  # GitHub Actions bug: See issue #1
-        cmd(["git", "commit", "-am", generate_commit_msg(diff)])
-        cmd(f"git push --set-upstream origin {NEW_BRANCH_NAME}")
-    else:
-        print("diff is empty!")
-    # assert diff0 == diff, f"diff0:\n {diff0}\ndiff:\n {diff}"
-    print("Success!")
-    # print(cmd(f"open {upstream_url}"))
-
-branches = cmd('git branch')
-print(branches)
-assert NEW_BRANCH_NAME not in branches, (
+assert NEW_BRANCH_NAME not in cmd('git branch'), (
     f'The branch {NEW_BRANCH_NAME} is already present and must be deleted.')
 assert os.getenv('GITHUB_TOKEN'), (
     '.github/main.workflow must provide access to the secret GITHUB_TOKEN.')
 
-print('os.environ: ' + '\n            '.join(f'{key}: {os.getenv(key)}'
-                                             for key in sorted(os.environ)))
+# print('os.environ: ' + '\n            '.join(f'{key}: {os.getenv(key)}'
+#                                              for key in sorted(os.environ)))
+
 with open(os.getenv("GITHUB_EVENT_PATH")) as in_file:
     github_event = json.load(in_file)
-print(json.dumps(github_event, sort_keys=True, indent=2))
+# print(json.dumps(github_event, sort_keys=True, indent=2))
 
-if __name__ == "__main__":
-    futurizer()
+flake8_results = flake8_tests()
+if not flake8_results:
+    print("No Python 3 syntax errors or undefined names were found.")
+    return
+
+cmd("git checkout -b " + NEW_BRANCH_NAME)
+cmd('git config --global user.email "{head_commit[author][email]}"'.format(**github_event))
+cmd('git config --global user.name "{head_commit[author][name]}"'.format(**github_event))
+file_paths = files_with_print_issues(flake8_results)
+if file_paths:
+    print(fix_print(file_paths))  # only files that are broken!
+else:
+    print(fix_safe_fixes())  # all files
+if cmd("git diff"):
+    cmd('git rm .github/main.workflow')  # GitHub Actions bug: See issue #1
+    cmd(["git", "commit", "-am", generate_commit_msg(diff)])
+    cmd(f"git push --set-upstream origin {NEW_BRANCH_NAME}")
+else:
+    print("diff is empty!")
+print("Success!")
