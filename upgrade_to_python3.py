@@ -9,6 +9,8 @@ from typing import Iterable, Tuple, Union
 
 from generate_commit_msg import generate_commit_msg
 
+print('=' * 83)  # Mark the start of Python execution in the Action logfile
+
 assert os.getenv('GITHUB_TOKEN'), "Need access to the secret GITHUB_TOKEN."
 
 print("os.environ: " + "\n            ".join(f"{key}: {os.getenv(key)}"
