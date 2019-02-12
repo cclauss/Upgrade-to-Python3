@@ -9,23 +9,22 @@ from typing import Iterable, Tuple, Union
 
 from generate_commit_msg import generate_commit_msg
 
+NEW_BRANCH_NAME = "modernize-Python-2-codes"
+
 print('=' * 83)  # Mark the start of Python execution in the Action logfile
 
-assert os.getenv('GITHUB_TOKEN'), "Need access to the secret GITHUB_TOKEN."
+branches = cmd('git branch')
+print(branches)
+assert NEW_BRANCH_NAME not in branches, (
+    f'The branch {NEW_BRANCH_NAME} is already present and must be deleted.')
+assert os.getenv('GITHUB_TOKEN'), (
+  '.github/main.workflow must provide access to the secret GITHUB_TOKEN.')
 
-print("os.environ: " + "\n            ".join(f"{key}: {os.getenv(key)}"
+print('os.environ: ' + '\n            '.join(f'{key}: {os.getenv(key)}'
                                              for key in sorted(os.environ)))
 with open(os.getenv("GITHUB_EVENT_PATH")) as in_file:
     github_event = json.load(in_file)
 print(json.dumps(github_event, sort_keys=True, indent=2))
-
-# DIR_BASE = "/github/workspace/"
-NEW_BRANCH_NAME = "modernize-Python-2-codes"
-# URL_BASE = "https://github.com"
-# USERNAME = getuser()  # Does local username == GitHub username?!?
-# if USERNAME == 'root':
-#    USERNAME = 'cclauss'
-# print(f"USERNAME = {USERNAME}")
 
 # https://github.com/PythonCharmers/python-future/blob/master/src/libfuturize/fixes/__init__.py
 # An even safer subset of fixes than `futurize --stage1`
@@ -101,6 +100,7 @@ def futurizer() -> None:
         return
     print(f"flake8_results:\n{flake8_results}")
 
+    """
     s = "git remote -v"
     print(f"{s}: {cmd(s)}")
     s = "git remote rm origin"
@@ -112,15 +112,12 @@ def futurizer() -> None:
     
     # s = "git remote add upstream "
     # print(f"{s}: {cmd(s)}")
+    """
 
-    s = "git checkout -b " + NEW_BRANCH_NAME
-    print(f"{s}: {cmd(s)}")
-    s = "git branch"
-    print(f"{s}: {cmd(s)}")
-    s = 'git config --global user.email "{head_commit[author][email]}"'.format(**github_event)
-    print(f"{s}: {cmd(s)}")
-    s = 'git config --global user.name "{head_commit[author][name]}"'.format(**github_event)
-    print(f"{s}: {cmd(s)}")
+    cmd("git checkout -b " + NEW_BRANCH_NAME)
+    cmd("git branch")
+    cmd('git config --global user.email "{head_commit[author][email]}"'.format(**github_event))
+    cmd('git config --global user.name "{head_commit[author][name]}"'.format(**github_event))
     file_paths = files_with_print_issues(flake8_results)
     if file_paths:
         print(fix_print(file_paths))  # only files that are broken!
@@ -128,18 +125,11 @@ def futurizer() -> None:
         print(fix_safe_fixes())  # all files
     diff = cmd("git diff")
     if diff:
-        print("0 ===")
-        print(f"diff:\n{diff}")
-        print("1 ===")
-        cmd('git rm .github/main.workflow')  # bug: See issue #1
-        print(cmd(["git", "commit", "-am", generate_commit_msg(diff)]))
-        print("2 ===")
-        print(cmd(f"git push --set-upstream origin {NEW_BRANCH_NAME}"))
-        print("3 ===")
-        # print(cmd(f"git push --set-upstream https://cclauss:{os.getenv('GITHUB_TOKEN')}@github.com/cclauss/Upgrade-to-Python3-test {NEW_BRANCH_NAME}"))
-        print("4 ===")
+        cmd('git rm .github/main.workflow')  # GitHub Actions bug: See issue #1
+        cmd(["git", "commit", "-am", generate_commit_msg(diff)])
+        cmd(f"git push --set-upstream origin {NEW_BRANCH_NAME}")
     else:
-        "diff is empty!"
+        print("diff is empty!")
     # assert diff0 == diff, f"diff0:\n {diff0}\ndiff:\n {diff}"
     print("Success!")
     # print(cmd(f"open {upstream_url}"))
