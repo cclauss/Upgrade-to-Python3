@@ -74,11 +74,6 @@ def fix_safe_fixes() -> str:
 #     return cmd(f'git remote add upstream {upstream_url}')
 
 
-assert NEW_BRANCH_NAME not in cmd('git branch'), (
-    f'The branch {NEW_BRANCH_NAME} is already present and must be deleted.')
-assert os.getenv('GITHUB_TOKEN'), (
-    '.github/main.workflow must provide access to the secret GITHUB_TOKEN.')
-
 # print('os.environ: ' + '\n            '.join(f'{key}: {os.getenv(key)}'
 #                                              for key in sorted(os.environ)))
 
