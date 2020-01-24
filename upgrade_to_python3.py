@@ -89,7 +89,8 @@ with open(os.getenv('GITHUB_EVENT_PATH')) as in_file:
 flake8_results = flake8_tests()
 assert flake8_results, """No Python 3 syntax errors or undefined names were found.
     This Action can not propose any further changes."""
-assert os.getenv('INPUT_REPO') == "hello"
+assert os.getenv('OUTPUT_REPO')
+assert os.getenv('GITHUB_ACTOR')
 
 cmd('git checkout -b ' + NEW_BRANCH_NAME)
 cmd('git config --global user.email "{head_commit[author][email]}"'.format(**github_event))
