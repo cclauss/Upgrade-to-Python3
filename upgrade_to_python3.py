@@ -100,7 +100,7 @@ if '+' in diff:
     cmd('git rm .github/main.workflow')  # GitHub Actions bug: See issue #1
     cmd(['git', 'commit', '-am', generate_commit_msg(diff)])
     try:
-        push_result = cmd('git push --set-upstream origin ' + NEW_BRANCH_NAME, err_text=True)
+        push_result = cmd('git push -f --set-upstream origin ' + NEW_BRANCH_NAME, err_text=True)
     except CalledProcessError:
         print(f'### FAILED: Your repo\'s "{NEW_BRANCH_NAME}" branch MUST be deleted before continuing.')
         raise
