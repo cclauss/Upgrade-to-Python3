@@ -89,24 +89,10 @@ with open(os.getenv('GITHUB_EVENT_PATH')) as in_file:
 flake8_results = flake8_tests()
 assert flake8_results, """No Python 3 syntax errors or undefined names were found.
     This Action can not propose any further changes."""
-assert os.getenv('OUTPUT_REPO')
-assert os.getenv('GITHUB_ACTOR')
-
-cmd('git checkout -b ' + NEW_BRANCH_NAME)
-cmd('git config --global user.email "{head_commit[author][email]}"'.format(**github_event))
-cmd('git config --global user.name "{head_commit[author][name]}"'.format(**github_event))
 file_paths = files_with_print_issues(flake8_results)
 diff = fix_print(file_paths) if file_paths else fix_safe_fixes()
 push_result = ''
-if '+' in diff:
-    cmd('git rm .github/main.workflow')  # GitHub Actions bug: See issue #1
-    cmd(['git', 'commit', '-am', generate_commit_msg(diff)])
-    try:
-        push_result = cmd('git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$OUTPUT_REPO.git" ' + NEW_BRANCH_NAME, err_text=True)
-    except CalledProcessError:
-        print(f'### FAILED: Your repo\'s "{NEW_BRANCH_NAME}" branch MUST be deleted before continuing.')
-        raise
-else:
+if '+' not in diff:
     print('diff is empty!')
 print('Success!')
 print('\n'.join(line.replace('remote:', '') for line in push_result.splitlines()[1:4]))
