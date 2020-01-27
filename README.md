@@ -10,10 +10,10 @@ Example workflow (Put the following text into your repo's `.github/workflows/upg
 on:
   push:
     branches:
-      - py3-upgrade
+      - master
 
 jobs:
-  py3:
+  upgrade_to_Python3::
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
