@@ -13,7 +13,7 @@ on:
       - master
 
 jobs:
-  upgrade_to_Python3::
+  upgrade_to_Python3:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
