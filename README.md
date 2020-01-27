@@ -5,7 +5,7 @@ This action uses [__flake8__](http://flake8.pycqa.org) to know if your Python co
 
 If syntax errors are found then this Action uses [__futurize__](http://python-future.org/futurize_cheatsheet.html) create pull requests that gradually upgrade that code to be more compatible with Python 3.  After this Action has run, return to your repo and look for a "__modernize-Python-2-codes__" branch in your repo.  If this branch exists then select it and __make pull request__ and make sure that your automate tests pass before merging the pull request.  After merging, delete the "__modernize-Python-2-codes__" branch so that the process can be repeated.
 
-Example workflow (Put the following text into your repo's `.github/workflows/py3.yml`):
+Example workflow (Put the following text into your repo's `.github/workflows/upgrade-to-py3.yml`):
 ```
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: "Upgrade to Python3"
-        uses: yeago/Upgrade-to-Python3@master
+        uses: cclauss/Upgrade-to-Python3@master
       - name: Commit files
         run: |
               git config --local user.email "me@me.me"
